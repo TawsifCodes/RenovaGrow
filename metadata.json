@@ -1,0 +1,6 @@
+{
+  "name": "RenovaGrow: AI-Powered Marketing Agency",
+  "description": "Showcasing RenovaGrow's premium marketing portfolio and AI growth tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
