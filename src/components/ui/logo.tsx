@@ -8,7 +8,7 @@ interface LogoProps {
 export function Logo({ className = "h-9", showText = true }: LogoProps) {
   // Gracefully adapt the "renova" branding text color for dark footers / parent wrappers
   const isWhiteText = className?.includes('text-white');
-  const renovaColorClass = isWhiteText ? 'text-white' : 'text-slate-850 dark:text-zinc-100';
+  const renovaColorClass = isWhiteText ? 'text-white' : 'text-slate-900';
   const growColorClass = isWhiteText ? 'text-emerald-300' : 'text-emerald-700';
 
   return (
