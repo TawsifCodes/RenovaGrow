@@ -8,7 +8,8 @@ const features = [
   {
     title: 'Marketing Videos',
     icon: Video,
-    description: 'High-production viral social reels and sensory video ads optimized for visual algorithms and customer hook retention.',
+    description: "Viral social reels & sensory product ads. Showcase of 'Hawas Fire' and 'Valero Imagination' launch loops optimized for custom feed hook retention.",
+    showVideoVector: true,
     className: 'md:col-span-2 md:row-span-2',
   },
   {

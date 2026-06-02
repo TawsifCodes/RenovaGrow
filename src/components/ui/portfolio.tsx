@@ -8,6 +8,11 @@ import perfumeFlatlay from '@/assets/images/perfume_flatlay_1780397972971.png';
 import perfumeVelvet from '@/assets/images/perfume_velvet_1780397988578.png';
 import perfumeWoman from '@/assets/images/perfume_woman_1780398005525.png';
 
+// Import newly generated case studies posters
+import nikePoster from '@/assets/images/nike_poster_1780426002660.png';
+import renovagrowPoster from '@/assets/images/renovagrow_poster_1780426019261.png';
+import glowRitualPoster from '@/assets/images/glow_ritual_poster_1780426034974.png';
+
 interface Project {
   title: string;
   client: string;
@@ -19,6 +24,7 @@ interface Project {
   color: string;
   image?: string;
   video?: string;
+  iframe?: string;
 }
 
 const projects: Project[] = [
@@ -56,18 +62,51 @@ const projects: Project[] = [
     color: 'from-teal-400 to-emerald-600',
     image: perfumeWoman,
   },
+  {
+    title: 'Air Jordan Social Trendsetter Campaign',
+    client: 'Air Jordan Regional Partner',
+    type: 'photo-design',
+    metric: '50% OFF',
+    metricLabel: 'Promotional Campaign CTR',
+    description: 'A dark, gritty urban-textured ad poster featuring iconic black & white low patent-leather sneakers in dynamic floating mid-air arrangement.',
+    tags: ['Street Footwear Style', 'Urban Grungy Aesthetic', 'E-Commerce Poster'],
+    color: 'from-zinc-700 to-black',
+    image: nikePoster,
+  },
+  {
+    title: 'RenovaGrow Seaside Citrus Freshness Launch',
+    client: 'RenovaGrow refreshing',
+    type: 'photo-design',
+    metric: 'Fresh 100%',
+    metricLabel: 'Zero Artificial Additives Focus',
+    description: 'Bright tropical coastal product scene of RenovaGrow clean lime energy plant-cans sweating beautifully inside an icewater bucket.',
+    tags: ['Lime Citrus Glow', '3D Scene Styling', 'Beach Sunbathing Mood'],
+    color: 'from-blue-400 to-emerald-600',
+    image: renovagrowPoster,
+  },
+  {
+    title: 'Glow Ritual Premium Sunbeam Skincare Poster',
+    client: 'Glow Ritual Botanical',
+    type: 'photo-design',
+    metric: '92% Rate',
+    metricLabel: 'Audience Skin-Texture Rating',
+    description: 'Minimalist editorial display featuring a botanical serum dropper and sage daily cleanser on sunlit travertine pedestals with leaf patterns.',
+    tags: ['Sage Green Palette', 'Organic Soft Shadows', 'Clean Beauty Launch'],
+    color: 'from-stone-600 to-emerald-800',
+    image: glowRitualPoster,
+  },
 
   // MARKETING VIDEOS
   {
-    title: 'Cinematic Visual Short Reels',
-    client: 'AromaBD Co. (Fragrance)',
+    title: 'Hawas Fire & Valero Fragrances Trilogy',
+    client: 'Valero & Valdas',
     type: 'marketing-video',
-    metric: '38K',
-    metricLabel: 'Targeted High-Intent Views',
-    description: 'High-production value product shortform video sequence optimized for modern feeds, highlighting sensory fluid streams.',
-    tags: ['Viral Reels', 'Cinematic Flow', 'Product Hook Ads'],
-    color: 'from-emerald-500 to-green-500',
-    video: '/perfume_video_1780398939227.mp4',
+    metric: '420K+',
+    metricLabel: 'Organic Social Video Views',
+    description: "Cinematic short-form launch sequence: 'Unleash your inner fire' for Hawas Fire & 'Experience imagination beyond thought' for Valero's iconic perfume impressions.",
+    tags: ['3D Product Ad', 'Cinematic Flow', 'Product Hook Ads'],
+    color: 'from-amber-500 to-emerald-600',
+    iframe: 'https://www.kapwing.com/e/6a1f16ca9e8c6994ff66f6b8',
   },
 
   // AD RUN SERVICES
@@ -203,7 +242,38 @@ export function Portfolio() {
               >
                 <div className="relative flex-1 flex flex-col">
                   {/* Performance Campaign Media with Hover Effect */}
-                  {project.video ? (
+                  {project.iframe ? (
+                    <div className="relative w-full h-[240px] overflow-hidden bg-zinc-950 flex flex-col justify-between border-b border-emerald-50">
+                      <div className="w-full h-full absolute inset-0">
+                        <iframe
+                          src={project.iframe}
+                          allow="autoplay; gyroscope;"
+                          allowFullScreen
+                          referrerPolicy="strict-origin"
+                          style={{ border: 0 }}
+                          className="w-full h-full"
+                          title="Embedded content made on Kapwing"
+                        />
+                      </div>
+                      {/* Top Label */}
+                      <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md border border-emerald-150 px-3 py-1 rounded-full text-[10px] font-bold text-emerald-900 shadow-md tracking-wide flex items-center gap-1 z-20 pointer-events-none">
+                        <Film className="size-3 text-emerald-600" />
+                        PREVIEW VIDEO
+                      </div>
+                      {/* Kapwing editor credit beautifully placed on the right */}
+                      <div className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-zinc-300 text-[10px] px-2 py-0.5 rounded-md hover:text-white transition-colors duration-200 z-20">
+                        Edited on{' '}
+                        <a 
+                          href="https://www.kapwing.com/video-editor" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="underline font-semibold hover:text-emerald-400"
+                        >
+                          Kapwing
+                        </a>
+                      </div>
+                    </div>
+                  ) : project.video ? (
                     <div className="relative w-full h-[240px] overflow-hidden bg-emerald-50/50 flex items-center justify-center border-b border-emerald-50">
                       <video 
                         src={project.video} 

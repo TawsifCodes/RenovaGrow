@@ -2,8 +2,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Send, Check, AlertCircle, Building, Globe, MessageSquare, Inbox, ExternalLink, RefreshCw, Smartphone, MapPin, Sparkles } from 'lucide-react';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export function ContactAuditor() {
+  const [activeTab, setActiveTab] = useState<'standard' | 'gemini'>('standard');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,6 +23,11 @@ export function ContactAuditor() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Gemini specific states
+  const [aiReport, setAiReport] = useState<string | null>(null);
+  const [loadingAi, setLoadingAi] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -40,6 +52,8 @@ I am reaching out to request a custom campaign consultation from RenovaGrow. Her
 Business Details / Campaign Notes:
 "${formData.message || '[Enter your message details in the form]'}"
 
+${aiReport ? `\n--- TAILORED GEMINI AI BLUEPRINT INCLUDED ---\n${aiReport}\n` : ''}
+
 I would love to coordinate a kickoff call or receive a tailored campaign proposal. Please let me know your availability.
 
 Best regards,
@@ -52,6 +66,46 @@ ${formData.name || '[Your Name]'}`;
 
   const getMailtoLink = () => {
     return `mailto:${emailTo}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+  };
+
+  const formIsValidForAiSetting = () => {
+    return !!formData.brandName;
+  };
+
+  const generateAiStrategy = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.brandName) {
+      setAiError("Please fill out your Brand Name so Gemini can compute customized strategies.");
+      return;
+    }
+
+    setAiError(null);
+    setLoadingAi(true);
+    setAiReport(null);
+
+    try {
+      const response = await fetch('/api/audit/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error("AI formulation engine timed out. Please check backend environment configurations.");
+      }
+
+      const data = await response.json();
+      if (data.success && data.audit) {
+        setAiReport(data.audit);
+      } else {
+        throw new Error(data.error || "Formulation failed. Ensure process.env.GEMINI_API_KEY is configured.");
+      }
+    } catch (err: any) {
+      console.error(err);
+      setAiError(err?.message || "Failed to process campaign blueprint. Please try again.");
+    } finally {
+      setLoadingAi(false);
+    }
   };
 
   const executeSubmission = async (e: React.FormEvent) => {
@@ -101,6 +155,30 @@ ${formData.name || '[Your Name]'}`;
     }
   };
 
+  const renderFormattedReport = (text: string) => {
+    return text.split('\n').map((line, idx) => {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('###')) {
+        return <h4 key={idx} className="text-base font-bold text-emerald-300 mt-5 mb-1.5 tracking-tight uppercase font-mono">{trimmed.replace(/###\s*/, '')}</h4>;
+      }
+      if (trimmed.startsWith('##')) {
+        return <h3 key={idx} className="text-lg font-bold text-white mt-6 mb-2 tracking-tight border-b border-white/10 pb-1 uppercase font-semibold">{trimmed.replace(/##\s*/, '')}</h3>;
+      }
+      if (trimmed.startsWith('#')) {
+        return <h2 key={idx} className="text-xl font-bold text-amber-300 mt-8 mb-3 tracking-tight font-serif">{trimmed.replace(/#\s*/, '')}</h2>;
+      }
+      if (trimmed.startsWith('-') || trimmed.startsWith('*')) {
+        return (
+          <li key={idx} className="ml-4 list-disc text-emerald-100/90 text-[13px] md:text-sm mb-1.5 leading-relaxed font-medium">
+            {trimmed.replace(/^[-*]\s*/, '')}
+          </li>
+        );
+      }
+      if (trimmed === '') return <div key={idx} className="h-1" />;
+      return <p key={idx} className="text-emerald-50/80 text-[13px] md:text-sm leading-relaxed font-normal mb-2">{trimmed}</p>;
+    });
+  };
+
   return (
     <section id="contact" className="py-24 md:py-32 w-full relative z-10 scroll-mt-20">
       <div className="mx-auto w-full max-w-5xl px-6">
@@ -137,7 +215,7 @@ ${formData.name || '[Your Name]'}`;
             </div>
           </div>
 
-          {/* Right Block: Pure High-Fidelity Form Layout / Success Status card */}
+           {/* Right Block: Pure High-Fidelity Form Layout / Success Status card */}
           <div className="lg:col-span-7">
             <AnimatePresence mode="wait">
               {submitted ? (
@@ -200,6 +278,57 @@ ${formData.name || '[Your Name]'}`;
                     </button>
                   </div>
                 </motion.div>
+              ) : activeTab === 'gemini' && aiReport ? (
+                <motion.div
+                  key="ai-report-state"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  className="glass-panel w-full bg-gradient-to-br from-emerald-950 to-emerald-980 p-8 md:p-10 rounded-3xl text-white border-2 border-emerald-500/10 shadow-2xl flex flex-col justify-between min-h-[460px] relative overflow-hidden"
+                >
+                  {/* Subtle background abstract light */}
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+                  <div className="space-y-6 relative z-10">
+                    <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="size-8 rounded-lg bg-emerald-800/30 flex items-center justify-center border border-emerald-500/20">
+                          <Sparkles className="size-4 text-emerald-300" />
+                        </div>
+                        <h4 className="text-[11px] font-bold uppercase tracking-widest font-mono text-emerald-300">
+                          TAILORED CAMPAIGN STRATEGY
+                        </h4>
+                      </div>
+                      <span className="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 py-0.5 px-2 rounded-full font-bold font-mono">
+                        Gemini 3.5 Active
+                      </span>
+                    </div>
+
+                    <div className="max-h-[340px] overflow-y-auto pr-1 space-y-2 scrollbar-thin">
+                      {renderFormattedReport(aiReport)}
+                    </div>
+                  </div>
+
+                  <div className="mt-8 pt-6 border-t border-emerald-800/40 relative z-10 flex flex-col sm:flex-row gap-3 items-center justify-between">
+                    <div className="text-center sm:text-left">
+                      <span className="text-xs text-emerald-300 font-bold block">Apply this Blueprint?</span>
+                      <button 
+                        onClick={() => setAiReport(null)}
+                        className="text-[11px] text-emerald-100/60 font-semibold underline hover:text-white cursor-pointer"
+                      >
+                        ← Adjust parameters or re-generate
+                      </button>
+                    </div>
+                    <button
+                      onClick={executeSubmission}
+                      disabled={loading}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-full bg-white text-emerald-950 hover:bg-emerald-55 text-xs font-extrabold transition-all hover:scale-[1.02] cursor-pointer shadow-lg mt-2 sm:mt-0"
+                    >
+                      <Send className="size-3.5" />
+                      📧 Apply & Mail Draft
+                    </button>
+                  </div>
+                </motion.div>
               ) : (
                 <motion.div
                   key="form-editor"
@@ -208,7 +337,37 @@ ${formData.name || '[Your Name]'}`;
                   exit={{ opacity: 0, y: -15 }}
                   className="glass-panel bg-white/70 p-6 md:p-8 rounded-3xl border border-emerald-100 shadow-xl"
                 >
-                  <form onSubmit={executeSubmission} className="space-y-4">
+                  {/* Visual Tab Selector */}
+                  <div className="flex bg-emerald-50/50 border border-emerald-100/80 p-1 rounded-2xl mb-6">
+                    <button
+                      type="button"
+                      onClick={() => { setActiveTab('standard'); setAiReport(null); setError(null); }}
+                      className={cn(
+                        "flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5",
+                        activeTab === 'standard' 
+                          ? "bg-emerald-800 text-white shadow-sm" 
+                          : "text-emerald-900/60 hover:text-emerald-900/90"
+                      )}
+                    >
+                      <Inbox className="size-3.5" />
+                      Standard Inbox
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { setActiveTab('gemini'); setError(null); }}
+                      className={cn(
+                        "flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5",
+                        activeTab === 'gemini' 
+                          ? "bg-emerald-800 text-white shadow-sm" 
+                          : "text-emerald-900/60 hover:text-emerald-900/90"
+                      )}
+                    >
+                      <Sparkles className="size-3.5 text-amber-500" />
+                      Gemini Blueprint
+                    </button>
+                  </div>
+
+                  <form onSubmit={activeTab === 'gemini' ? generateAiStrategy : executeSubmission} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-xs font-bold text-emerald-900/60 uppercase tracking-wider mb-1.5">Your Name *</label>
@@ -219,7 +378,7 @@ ${formData.name || '[Your Name]'}`;
                           value={formData.name}
                           onChange={handleInputChange}
                           placeholder="Your Name"
-                          disabled={loading}
+                          disabled={loading || loadingAi}
                           className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-emerald-950 text-sm font-semibold transition-all disabled:opacity-60"
                         />
                       </div>
@@ -232,7 +391,7 @@ ${formData.name || '[Your Name]'}`;
                           value={formData.email}
                           onChange={handleInputChange}
                           placeholder="name@company.com"
-                          disabled={loading}
+                          disabled={loading || loadingAi}
                           className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-emerald-950 text-sm font-semibold transition-all disabled:opacity-60"
                         />
                       </div>
@@ -250,7 +409,7 @@ ${formData.name || '[Your Name]'}`;
                           value={formData.brandName}
                           onChange={handleInputChange}
                           placeholder="My Company"
-                          disabled={loading}
+                          disabled={loading || loadingAi}
                           className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-emerald-950 text-sm font-semibold transition-all disabled:opacity-60"
                         />
                       </div>
@@ -264,7 +423,7 @@ ${formData.name || '[Your Name]'}`;
                           value={formData.website}
                           onChange={handleInputChange}
                           placeholder="https://..."
-                          disabled={loading}
+                          disabled={loading || loadingAi}
                           className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-emerald-950 text-sm font-semibold transition-all disabled:opacity-60"
                         />
                       </div>
@@ -276,8 +435,8 @@ ${formData.name || '[Your Name]'}`;
                         name="goal"
                         value={formData.goal}
                         onChange={handleInputChange}
-                        disabled={loading}
-                        className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-emerald-950 text-sm font-semibold transition-all disabled:opacity-60"
+                        disabled={loading || loadingAi}
+                        className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-emerald-950 text-sm font-semibold transition-all disabled:opacity-60 font-medium"
                       >
                         <option>Marketing Videos</option>
                         <option>Marketing Photo Designs</option>
@@ -297,9 +456,9 @@ ${formData.name || '[Your Name]'}`;
                         name="message"
                         value={formData.message}
                         onChange={handleInputChange}
-                        rows={5}
-                        placeholder="Please describe your key business goals, project timeline, design expectations, or operational challenges..."
-                        disabled={loading}
+                        rows={4}
+                        placeholder={activeTab === 'gemini' ? "Provide key brand attributes, product hooks, target audiences, or competitors to align your custom Gemini marketing strategy..." : "Please describe your key business goals, project timeline, design expectations, or operational challenges..."}
+                        disabled={loading || loadingAi}
                         className="w-full px-4 py-3 rounded-2xl bg-white border border-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-emerald-950 text-sm font-semibold transition-all resize-none disabled:opacity-60"
                       />
                     </div>
@@ -311,15 +470,32 @@ ${formData.name || '[Your Name]'}`;
                       </div>
                     )}
 
+                    {aiError && (
+                      <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-100 rounded-xl text-amber-800 text-xs font-semibold leading-relaxed">
+                        <AlertCircle className="size-4 shrink-0 mt-0.5 text-amber-600" />
+                        <span>{aiError}</span>
+                      </div>
+                    )}
+
                     <button
                       type="submit"
-                      disabled={loading}
-                      className="w-full py-4 px-6 rounded-2xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 mt-4 hover:scale-[1.01] shadow-lg shadow-emerald-900/10 cursor-pointer disabled:opacity-70 disabled:pointer-events-none"
+                      disabled={loading || loadingAi}
+                      className={cn(
+                        "w-full py-4 px-6 rounded-2xl text-white font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 mt-4 hover:scale-[1.01] shadow-lg cursor-pointer disabled:opacity-75 disabled:pointer-events-none",
+                        activeTab === 'gemini' 
+                          ? "bg-gradient-to-r from-emerald-800 to-emerald-950 shadow-emerald-950/10 hover:brightness-110" 
+                          : "bg-emerald-800 hover:bg-emerald-900 shadow-emerald-900/10"
+                      )}
                     >
-                      {loading ? (
+                      {loading || loadingAi ? (
                         <>
                           <RefreshCw className="size-4 animate-spin" />
-                          Submitting parameters & routing inbox...
+                          {loadingAi ? "Formulating strategic blueprint with Gemini..." : "Submitting parameters & routing inbox..."}
+                        </>
+                      ) : activeTab === 'gemini' ? (
+                        <>
+                          <Sparkles className="size-4 text-amber-300 animate-pulse" />
+                          Formulate AI Strategic Plan
                         </>
                       ) : (
                         <>
@@ -333,7 +509,6 @@ ${formData.name || '[Your Name]'}`;
               )}
             </AnimatePresence>
           </div>
-
         </div>
 
       </div>
