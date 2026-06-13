@@ -61,7 +61,7 @@ export function SplineSceneBasic() {
 
       {/* 3D Scene Background - Pure-CSS/SVG 3D Glass sculpture, floating brand leaves, & high-definition palm leaves campaign video */}
       <div className="relative md:absolute md:right-0 md:top-0 md:bottom-0 z-0 flex justify-center md:justify-end items-center opacity-100 lg:translate-x-[2%] pointer-events-none w-full h-[55vh] md:h-full mt-4 mb-4 md:mt-0 md:mb-0">
-        <div className="w-[95%] md:w-[48vw] h-[48vh] md:h-[78vh] rounded-4xl overflow-hidden relative shadow-2xl border border-emerald-200/30 bg-gradient-to-br from-emerald-50/10 to-teal-50/5 backdrop-blur-sm flex flex-col md:flex-row p-4 md:p-6 gap-4 md:gap-6 items-center justify-center">
+        <div className="w-[95%] md:w-[42vw] h-[46vh] md:h-[68vh] rounded-4xl overflow-hidden relative shadow-2xl border border-emerald-200/30 bg-gradient-to-br from-emerald-50/10 to-teal-50/5 backdrop-blur-sm flex flex-col md:flex-row p-4 md:p-6 gap-4 md:gap-5 items-center justify-center">
           
           {/* Tech Dotted Grid Background */}
           <div 
@@ -77,7 +77,7 @@ export function SplineSceneBasic() {
           <div className="absolute w-60 h-60 rounded-full bg-teal-300/15 blur-2xl translate-x-12 -translate-y-12 animate-pulse" style={{ animationDuration: '8s' }} />
 
           {/* Tropical Palm Leaves Video Capsule (Positioned elegantly beside the interactive cube) */}
-          <div className="relative w-full h-[12vh] md:w-[13vw] md:h-full rounded-3xl overflow-hidden border border-emerald-200/35 bg-emerald-950/20 shadow-xl shrink-0 pointer-events-auto">
+          <div className="relative w-full h-[12vh] md:w-[11vw] md:h-full rounded-3xl overflow-hidden border border-emerald-200/35 bg-emerald-950/20 shadow-xl shrink-0 pointer-events-auto">
             <video
               src="https://assets.mixkit.co/videos/preview/mixkit-under-a-palm-tree-in-the-wind-3259-large.mp4"
               autoPlay
@@ -130,35 +130,35 @@ export function SplineSceneBasic() {
                   repeat: Infinity,
                   ease: "linear"
                 }}
-                className="w-28 h-28 md:w-32 md:h-32 relative [transform-style:preserve-3d]"
+                className="w-24 h-24 md:w-24 md:h-24 relative [transform-style:preserve-3d]"
                 whileHover={{ scale: 1.08 }}
               >
                 {/* Front face with glassy tint */}
-                <div className="absolute inset-0 bg-emerald-400/15 border-2 border-emerald-300/40 backdrop-blur-md [transform:translateZ(56px)] rounded-2xl flex flex-col items-center justify-center text-[10px] font-mono font-bold text-emerald-800 tracking-wider shadow-inner">
+                <div className="absolute inset-0 bg-emerald-400/15 border-2 border-emerald-300/40 backdrop-blur-md [transform:translateZ(48px)] rounded-2xl flex flex-col items-center justify-center text-[10px] font-mono font-bold text-emerald-800 tracking-wider shadow-inner">
                   <span className="text-emerald-950 font-sans font-extrabold text-[11px]">RENOVA</span>
                   <span className="text-[7px] text-emerald-800/80 mt-0.5">3D ENGINE</span>
                 </div>
                 
                 {/* Back face with glassy tint */}
-                <div className="absolute inset-0 bg-teal-500/15 border-2 border-teal-400/40 backdrop-blur-md [transform:rotateY(180deg)_translateZ(56px)] rounded-2xl flex flex-col items-center justify-center text-[10px] font-mono font-bold text-teal-800 tracking-wider shadow-inner">
+                <div className="absolute inset-0 bg-teal-500/15 border-2 border-teal-400/40 backdrop-blur-md [transform:rotateY(180deg)_translateZ(48px)] rounded-2xl flex flex-col items-center justify-center text-[10px] font-mono font-bold text-teal-800 tracking-wider shadow-inner">
                   <span className="text-emerald-950 font-sans font-extrabold text-[11px]">GROW</span>
                   <span className="text-[7px] text-teal-800/80 mt-0.5">AUTOMATION</span>
                 </div>
                 
                 {/* Left face with glassy tint */}
-                <div className="absolute inset-0 bg-emerald-500/10 border border-emerald-400/30 backdrop-blur-md [transform:rotateY(-90deg)_translateZ(56px)] rounded-2xl" />
+                <div className="absolute inset-0 bg-emerald-500/10 border border-emerald-400/30 backdrop-blur-md [transform:rotateY(-90deg)_translateZ(48px)] rounded-2xl" />
                 
                 {/* Right face with glassy tint */}
-                <div className="absolute inset-0 bg-teal-400/10 border border-teal-300/30 backdrop-blur-md [transform:rotateY(90deg)_translateZ(56px)] rounded-2xl" />
+                <div className="absolute inset-0 bg-teal-400/10 border border-teal-300/30 backdrop-blur-md [transform:rotateY(90deg)_translateZ(48px)] rounded-2xl" />
                 
                 {/* Top face with glassy tint */}
-                <div className="absolute inset-0 bg-emerald-300/15 border border-emerald-200/35 backdrop-blur-md [transform:rotateX(90deg)_translateZ(56px)] rounded-2xl" />
+                <div className="absolute inset-0 bg-emerald-300/15 border border-emerald-200/35 backdrop-blur-md [transform:rotateX(90deg)_translateZ(48px)] rounded-2xl" />
                 
                 {/* Bottom face with glassy tint */}
-                <div className="absolute inset-0 bg-emerald-800/10 border-2 border-emerald-600/30 backdrop-blur-md [transform:rotateX(-90deg)_translateZ(56px)] rounded-2xl" />
+                <div className="absolute inset-0 bg-emerald-800/10 border-2 border-emerald-600/30 backdrop-blur-md [transform:rotateX(-90deg)_translateZ(48px)] rounded-2xl" />
                 
                 {/* Inner glowing core capsule */}
-                <div className="absolute inset-6 bg-gradient-to-tr from-amber-400/50 via-emerald-500/40 to-teal-400/50 blur-[3px] rounded-full [transform:translateZ(0px)] animate-pulse" />
+                <div className="absolute inset-5 bg-gradient-to-tr from-amber-400/50 via-emerald-500/40 to-teal-400/50 blur-[3px] rounded-full [transform:translateZ(0px)] animate-pulse" />
               </motion.div>
             </div>
 
