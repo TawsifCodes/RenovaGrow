@@ -3,13 +3,27 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { lazy, Suspense } from "react";
 import { SplineSceneBasic } from "@/components/ui/demo";
 import { Navbar } from "@/components/ui/navbar";
-import DemoOne from "@/components/ui/feature-demo";
-import { Portfolio } from "@/components/ui/portfolio";
-import { ContactAuditor } from "@/components/ui/contact-auditor";
-import { Footer } from "@/components/ui/footer-section";
-import { VectorDecorations } from "@/components/ui/vector-decorations";
+
+// Lazy-loaded secondary modules to accelerate initial paint and interaction times
+const DemoOne = lazy(() => import("@/components/ui/feature-demo"));
+const Portfolio = lazy(() => import("@/components/ui/portfolio").then(m => ({ default: m.Portfolio })));
+const ContactAuditor = lazy(() => import("@/components/ui/contact-auditor").then(m => ({ default: m.ContactAuditor })));
+const Footer = lazy(() => import("@/components/ui/footer-section").then(m => ({ default: m.Footer })));
+const VectorDecorations = lazy(() => import("@/components/ui/vector-decorations").then(m => ({ default: m.VectorDecorations })));
+
+// Ultra-fast lightweight loading skeleton
+function ComponentSkeleton() {
+  return (
+    <div className="w-full max-w-7xl mx-auto py-12 px-6 animate-pulse space-y-4">
+      <div className="h-8 bg-emerald-100/50 rounded-lg w-1/4"></div>
+      <div className="h-4 bg-emerald-100/30 rounded w-1/2"></div>
+      <div className="h-32 bg-emerald-100/20 rounded-2xl w-full"></div>
+    </div>
+  );
+}
 
 export default function App() {
   return (
@@ -22,17 +36,33 @@ export default function App() {
       </div>
 
       {/* Nano Banana Leaf Minimalist SVG Vector Decorations */}
-      <VectorDecorations />
+      <Suspense fallback={null}>
+        <VectorDecorations />
+      </Suspense>
 
       <div className="relative z-10 flex flex-col items-center w-full">
         <Navbar />
         <main className="w-full flex flex-col items-center relative gap-2">
+          {/* Hero section is eagerly loaded and interactive instantly */}
           <SplineSceneBasic />
-          <DemoOne />
-          <Portfolio />
-          <ContactAuditor />
+          
+          {/* Deferred lazy-loaded content blocks optimized with Suspense */}
+          <Suspense fallback={<ComponentSkeleton />}>
+            <DemoOne />
+          </Suspense>
+          
+          <Suspense fallback={<ComponentSkeleton />}>
+            <Portfolio />
+          </Suspense>
+          
+          <Suspense fallback={<ComponentSkeleton />}>
+            <ContactAuditor />
+          </Suspense>
         </main>
-        <Footer />
+        
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
       </div>
     </div>
   );

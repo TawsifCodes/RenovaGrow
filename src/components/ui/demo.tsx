@@ -1,8 +1,45 @@
 'use client'
 
-import { SplineScene } from "@/components/ui/splite";
 import { motion } from "framer-motion";
  
+// BrandLeaf component representing the iconic RenovaGrow logo outline and arrow growth theme
+function BrandLeaf({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Glossy leaf matching RenovaGrow brand asset */}
+      <path 
+        d="M50 15C32 38 32 68 50 85C68 68 68 38 50 15Z" 
+        fill="currentColor" 
+        fillOpacity="0.18"
+        stroke="currentColor" 
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path 
+        d="M50 85C50 61 50 39 50 15" 
+        stroke="currentColor" 
+        strokeWidth="1.5" 
+        strokeLinecap="round"
+      />
+      {/* Curved growth arrow inside the leaf representing business elevation */}
+      <path 
+        d="M36 58C41 50 49 46 56 48" 
+        stroke="currentColor" 
+        strokeWidth="2.5" 
+        strokeLinecap="round"
+      />
+      <path 
+        d="M52 43L57 48L52 53" 
+        stroke="currentColor" 
+        strokeWidth="2.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function SplineSceneBasic() {
   return (
     <section id="home" className="w-full min-h-[100vh] relative flex flex-col md:flex-row md:items-center md:justify-center overflow-hidden pt-24 md:pt-0">
@@ -22,19 +59,189 @@ export function SplineSceneBasic() {
         </motion.div>
       </div>
 
-      {/* 3D Scene Background */}
-      <div className="relative md:absolute md:inset-0 z-0 flex justify-center md:justify-end items-center opacity-100 md:translate-x-[10%] pointer-events-auto w-full h-[40vh] md:h-auto mt-4 mb-4 md:mt-0 md:mb-0">
-        <div 
-          className="w-[120%] h-[55vh] md:max-w-none md:w-[70vw] md:h-[100vh] mx-auto md:mx-0 transform scale-[0.75] md:scale-100 origin-center flex items-center justify-center"
-          style={{
-            maskImage: 'radial-gradient(50% 50% at 50% 50%, black 60%, transparent 100%)',
-            WebkitMaskImage: 'radial-gradient(50% 50% at 50% 50%, black 60%, transparent 100%)'
-          }}
-        >
-          <SplineScene 
-            scene="https://prod.spline.design/ipj9zB1dtTJc39jn/scene.splinecode"
-            className="w-full h-full"
+      {/* 3D Scene Background - Pure-CSS/SVG 3D Glass sculpture, floating brand leaves, & high-definition palm leaves campaign video */}
+      <div className="relative md:absolute md:right-0 md:top-0 md:bottom-0 z-0 flex justify-center md:justify-end items-center opacity-100 lg:translate-x-[2%] pointer-events-none w-full h-[55vh] md:h-full mt-4 mb-4 md:mt-0 md:mb-0">
+        <div className="w-[95%] md:w-[48vw] h-[48vh] md:h-[78vh] rounded-4xl overflow-hidden relative shadow-2xl border border-emerald-200/30 bg-gradient-to-br from-emerald-50/10 to-teal-50/5 backdrop-blur-sm flex flex-col md:flex-row p-4 md:p-6 gap-4 md:gap-6 items-center justify-center">
+          
+          {/* Tech Dotted Grid Background */}
+          <div 
+            className="absolute inset-0 opacity-[0.25]"
+            style={{
+              backgroundImage: 'radial-gradient(#10b981 1.2px, transparent 1.2px)',
+              backgroundSize: '24px 24px',
+            }}
           />
+
+          {/* Deep glowing color fields in the background */}
+          <div className="absolute w-72 h-72 rounded-full bg-emerald-400/20 blur-3xl animate-pulse" style={{ animationDuration: '6s' }} />
+          <div className="absolute w-60 h-60 rounded-full bg-teal-300/15 blur-2xl translate-x-12 -translate-y-12 animate-pulse" style={{ animationDuration: '8s' }} />
+
+          {/* Tropical Palm Leaves Video Capsule (Positioned elegantly beside the interactive cube) */}
+          <div className="relative w-full h-[12vh] md:w-[13vw] md:h-full rounded-3xl overflow-hidden border border-emerald-200/35 bg-emerald-950/20 shadow-xl shrink-0 pointer-events-auto">
+            <video
+              src="https://assets.mixkit.co/videos/preview/mixkit-under-a-palm-tree-in-the-wind-3259-large.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover filter brightness-[1.05] contrast-[1.10] saturate-[1.05]"
+            />
+            {/* Emerald/Greenish overlay to lock onto RenovaGrow brand theme */}
+            <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/50 via-emerald-900/10 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-emerald-800/10 mix-blend-color pointer-events-none" />
+            
+            {/* Live Indicator Badge */}
+            <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-emerald-900/80 backdrop-blur-md text-[8px] text-emerald-100 uppercase tracking-widest font-mono py-1 px-2.5 rounded-full border border-emerald-400/20">
+              <span className="size-1 rounded-full bg-emerald-400 animate-ping inline-block" />
+              Campaign Video
+            </div>
+          </div>
+
+          {/* Interactive Core Area containing rings, rotating glass cube, and floating SVG leaves */}
+          <div className="relative w-full h-full flex-1 flex items-center justify-center">
+
+            {/* Floating thin SVG orbital rings */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              className="absolute w-80 h-80 rounded-full border border-dashed border-emerald-500/20 flex items-center justify-center"
+            >
+              <div className="size-2 rounded-full bg-emerald-500/40 -mt-1" />
+            </motion.div>
+            
+            <motion.div
+              animate={{ rotate: -360 }}
+              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+              className="absolute w-64 h-64 rounded-full border border-emerald-500/10 flex items-center justify-center"
+            >
+              <div className="size-1.5 rounded-full bg-teal-400/50 ml-1" />
+            </motion.div>
+
+            {/* Majestic 3D Glassmorphic Interactive rotating cube */}
+            <div className="absolute pointer-events-auto cursor-grab active:cursor-grabbing [perspective:1000px] flex items-center justify-center">
+              <motion.div
+                animate={{
+                  rotateX: [12, 372],
+                  rotateY: [15, 375],
+                  rotateZ: [10, 370]
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+                className="w-28 h-28 md:w-32 md:h-32 relative [transform-style:preserve-3d]"
+                whileHover={{ scale: 1.08 }}
+              >
+                {/* Front face with glassy tint */}
+                <div className="absolute inset-0 bg-emerald-400/15 border-2 border-emerald-300/40 backdrop-blur-md [transform:translateZ(56px)] rounded-2xl flex flex-col items-center justify-center text-[10px] font-mono font-bold text-emerald-800 tracking-wider shadow-inner">
+                  <span className="text-emerald-950 font-sans font-extrabold text-[11px]">RENOVA</span>
+                  <span className="text-[7px] text-emerald-800/80 mt-0.5">3D ENGINE</span>
+                </div>
+                
+                {/* Back face with glassy tint */}
+                <div className="absolute inset-0 bg-teal-500/15 border-2 border-teal-400/40 backdrop-blur-md [transform:rotateY(180deg)_translateZ(56px)] rounded-2xl flex flex-col items-center justify-center text-[10px] font-mono font-bold text-teal-800 tracking-wider shadow-inner">
+                  <span className="text-emerald-950 font-sans font-extrabold text-[11px]">GROW</span>
+                  <span className="text-[7px] text-teal-800/80 mt-0.5">AUTOMATION</span>
+                </div>
+                
+                {/* Left face with glassy tint */}
+                <div className="absolute inset-0 bg-emerald-500/10 border border-emerald-400/30 backdrop-blur-md [transform:rotateY(-90deg)_translateZ(56px)] rounded-2xl" />
+                
+                {/* Right face with glassy tint */}
+                <div className="absolute inset-0 bg-teal-400/10 border border-teal-300/30 backdrop-blur-md [transform:rotateY(90deg)_translateZ(56px)] rounded-2xl" />
+                
+                {/* Top face with glassy tint */}
+                <div className="absolute inset-0 bg-emerald-300/15 border border-emerald-200/35 backdrop-blur-md [transform:rotateX(90deg)_translateZ(56px)] rounded-2xl" />
+                
+                {/* Bottom face with glassy tint */}
+                <div className="absolute inset-0 bg-emerald-800/10 border-2 border-emerald-600/30 backdrop-blur-md [transform:rotateX(-90deg)_translateZ(56px)] rounded-2xl" />
+                
+                {/* Inner glowing core capsule */}
+                <div className="absolute inset-6 bg-gradient-to-tr from-amber-400/50 via-emerald-500/40 to-teal-400/50 blur-[3px] rounded-full [transform:translateZ(0px)] animate-pulse" />
+              </motion.div>
+            </div>
+
+            {/* Dynamic, hardware-accelerated floating brand leaves drifting with natural sway */}
+            <motion.div
+              animate={{
+                x: [0, 15, -15, 0],
+                y: [0, -40, 20, 0],
+                rotate: [0, 45, -45, 0]
+              }}
+              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-8 right-6 text-emerald-600/60 size-10"
+            >
+              <BrandLeaf className="w-full h-full" />
+            </motion.div>
+
+            <motion.div
+              animate={{
+                x: [0, -20, 15, 0],
+                y: [0, 35, -25, 0],
+                rotate: [20, -60, 45, 20]
+              }}
+              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute bottom-12 left-4 text-emerald-500/50 size-12"
+            >
+              <BrandLeaf className="w-full h-full" />
+            </motion.div>
+
+            <motion.div
+              animate={{
+                x: [-10, 10, -10],
+                y: [0, -15, 0],
+                scale: [0.95, 1.05, 0.95],
+                rotate: [-15, 15, -15]
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+              className="absolute top-24 left-10 text-teal-600/40 size-8"
+            >
+              <BrandLeaf className="w-full h-full" />
+            </motion.div>
+
+            <motion.div
+              animate={{
+                x: [15, -15, 15],
+                y: [0, 25, 0],
+                rotate: [30, 90, 30]
+              }}
+              transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 3.5 }}
+              className="absolute bottom-16 right-8 text-emerald-700/40 size-9"
+            >
+              <BrandLeaf className="w-full h-full" />
+            </motion.div>
+
+          </div>
+
+          {/* Conversions KPI Pill */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: [0, -10, 0], opacity: 1 }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-3 right-3 md:top-6 md:right-6 bg-white/85 border border-emerald-100/90 p-2.5 rounded-2xl shadow-lg flex items-center gap-2 pointer-events-auto hover:scale-105 transition-all"
+          >
+            <div className="size-2 rounded-full bg-emerald-600 animate-ping" />
+            <div className="text-left">
+              <span className="block text-[7px] uppercase font-bold tracking-wider text-emerald-900/60 font-mono">Conversion Boost</span>
+              <span className="text-[10px] font-bold text-emerald-950 font-mono">+340% Realized</span>
+            </div>
+          </motion.div>
+
+          {/* AI Optimizations KPI Pill */}
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: [0, 10, 0], opacity: 1 }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute bottom-3 right-3 md:bottom-6 md:right-6 bg-white/85 border border-emerald-100/90 p-2.5 rounded-2xl shadow-lg flex items-center gap-2 pointer-events-auto hover:scale-105 transition-all w-fit"
+          >
+            <div className="size-2 rounded-full bg-amber-500 animate-pulse" />
+            <div className="text-left">
+              <span className="block text-[7px] uppercase font-bold tracking-wider text-emerald-900/60 font-mono">Campaign Audits</span>
+              <span className="text-[10px] font-bold text-emerald-950 font-mono">Gemini Supported</span>
+            </div>
+          </motion.div>
+
         </div>
       </div>
       
