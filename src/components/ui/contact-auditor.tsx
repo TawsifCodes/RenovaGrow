@@ -34,12 +34,12 @@ export function ContactAuditor() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const emailTo = "gihanjoebert@gmail.com";
+  const emailTo = "renovagrow.co@gmail.com";
   const emailSubject = formData.brandName 
     ? `Campaign Consultation Inquiry - ${formData.brandName}`
     : "Campaign Consultation Inquiry";
 
-  const emailBody = `Hello Gihan,
+  const emailBody = `Hello RenovaGrow Team,
 
 I am reaching out to request a custom campaign consultation from RenovaGrow. Here are our campaign parameters:
 
@@ -220,7 +220,7 @@ ${formData.name || '[Your Name]'}`;
           </h2>
           <p className="text-emerald-900/75 mt-4 text-base md:text-lg font-medium">
             Have questions or ready to launch? Complete the form below. 
-            We will store your specifications and directly redirect your browser to your email client to inbox <strong className="text-emerald-800 font-bold">gihanjoebert@gmail.com</strong>.
+            We will store your specifications and directly redirect your browser to your email client to inbox <strong className="text-emerald-800 font-bold">renovagrow.co@gmail.com</strong>.
           </p>
         </div>
 
@@ -261,7 +261,7 @@ ${formData.name || '[Your Name]'}`;
                         Inquiry Received!
                       </h4>
                       <p className="text-emerald-100/80 text-sm md:text-base font-semibold leading-relaxed">
-                        Your parameters have been logged into our database. We have triggered your email client so you can send your direct campaign draft to <strong className="text-emerald-200">gihanjoebert@gmail.com</strong>.
+                        Your parameters have been logged into our database. We have triggered your email client so you can send your direct campaign draft to <strong className="text-emerald-200">renovagrow.co@gmail.com</strong>.
                       </p>
                     </div>
 
